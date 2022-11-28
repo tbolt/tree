@@ -1,3 +1,35 @@
-<img src="<%= asset_path 'tree.svg' %>" width="266px">
-<p>The Social Network that doesn't track you.</p>
-
+<div class="col-lg-8 mx-auto p-4 py-md-5">
+  <div class="d-flex align-items-center pb-2 mb-5 border-bottom">
+    <img src="<%= asset_path 'tree.svg' %>" width="96px">
+  </div>
+  <main>
+    <h1>The Social Network that doesn't track you.</h1>
+    <p class="fs-5 col-md-8">Join Tree and take back your privacy and sanity. No algorithms, no invasive ads, and a reverse-chronological timeline. 😎</p>
+    <% if user_signed_in? %>
+      <li><%= link_to "My Account", account_path %></li>
+       <li><%= button_to "Logout", logout_path, method: :delete %></li>
+    <% end %>
+    <div class="mb-3">
+      <%= link_to "Login", login_path, class: "btn btn-outline-primary px-4" %>
+      <%= link_to "Sign up", sign_up_path, class: "btn btn-primary px-4" %>
+      <div class="py-2">
+        <%= link_to "Forgot my password", new_password_path %>
+        <br>
+        <%= link_to "Didn't receive confirmation instructions", new_confirmation_path %>
+      </div>
+    </div>
+    <hr class="col-3 col-md-2 mb-5">
+    <div class="row g-5">
+      <div class="col-md-6">
+        <h2>Coming soon</h2>
+        <p>This site is under development and will be available soon(ish😄).</p>
+      </div>
+      <div class="col-md-6">
+        <h2>Stay tuned</h2>
+        <p>Follow the <a href="https://github.com/tbolt/tree">GitHub repository</a> to keep up with the latest developments</p>
+      </div>
+    </div>
+  </main>
+<footer class="pt-5 my-5 text-muted border-top">
+  Created by <a href="https://github.com/tbolt">@tbolt</a> &middot; &copy; 2022
+</footer>
