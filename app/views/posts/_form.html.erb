@@ -1,0 +1,13 @@
+<div id="new_post_form" class="card mb-4">
+  <div class="card-body">
+    <%= form_with model: post, url: posts_path do |form| %>
+      <%= render partial: "shared/form_errors", locals: { object: form.object } %>
+      <div class="mb-2">
+        <%= form.text_area :body, class: "form-control", placeholder: "What's on your mind?", maxlength: 500, rows: 3 %>
+      </div>
+      <div class="d-flex justify-content-end">
+        <%= form.submit "Post", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

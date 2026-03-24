@@ -1,46 +1,57 @@
-<!-- app/views/users/edit.html.erb -->
-<%= form_with model: @user, url: account_path, method: :put do |form| %>
-  <%= render partial: "shared/form_errors", locals: { object: form.object } %>
-  <div>
-    <%= form.label :email, "Current Email" %>
-    <%= form.email_field :email, disabled: true %>
-  </div>
-  <div>
-    <%= form.label :unconfirmed_email, "New Email" %>
-    <%= form.text_field :unconfirmed_email %>
-  </div>
-  <div>
-    <%= form.label :password, "Password (leave blank if you don't want to change it)" %>
-    <%= form.password_field :password %>
-  </div>
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation %>
-  </div>
-  <hr/>
-  <div>
-    <%= form.label :current_password, "Current password (we need your current password to confirm your changes)" %>
-    <%= form.password_field :current_password, required: true %>
-  </div>
-  <%= form.submit "Update Account" %>
-  
-  <%= link_to 'profile', profile_path(@user.username) %>
-  
-  <h2>Current Logins</h2>
-  <% if @active_sessions.any? %> 
-    <%= button_to "Log out of all other sessions", destroy_all_active_sessions_path, method: :delete %>
-    <table>
-      <thead>
-        <tr>
-          <th>User Agent</th>
-          <th>IP Address</th>
-          <th>Signed In At</th>
-          <th>Sign Out</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render @active_sessions %>
-      </tbody>
-    </table>
+<div class="col-lg-8 mx-auto p-4 py-md-5">
+  <h1 class="mb-4">Account Settings</h1>
+  <%= form_with model: @user, url: account_path, method: :put do |form| %>
+    <%= render partial: "shared/form_errors", locals: { object: form.object } %>
+    <div class="mb-3">
+      <%= form.label :email, "Current Email", class: "form-label" %>
+      <%= form.email_field :email, disabled: true, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :unconfirmed_email, "New Email", class: "form-label" %>
+      <%= form.email_field :unconfirmed_email, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :password, "Password (leave blank if you don't want to change it)", class: "form-label" %>
+      <%= form.password_field :password, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :password_confirmation, class: "form-label" %>
+      <%= form.password_field :password_confirmation, class: "form-control" %>
+    </div>
+    <hr>
+    <div class="mb-3">
+      <%= form.label :current_password, "Current password (required to confirm changes)", class: "form-label" %>
+      <%= form.password_field :current_password, required: true, class: "form-control" %>
+    </div>
+    <%= form.submit "Update Account", class: "btn btn-primary" %>
+    <%= link_to "Profile", profile_path(@user.username), class: "btn btn-outline-secondary ms-2" %>
+    <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-outline-secondary ms-2" %>
   <% end %>
-<% end %>
+
+  <hr class="my-4">
+
+  <h2 class="mb-3">Current Logins</h2>
+  <% if @active_sessions.any? %>
+    <%= button_to "Log out of all other sessions", destroy_all_active_sessions_path, method: :delete, class: "btn btn-outline-danger btn-sm mb-3" %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>User Agent</th>
+            <th>IP Address</th>
+            <th>Signed In At</th>
+            <th>Sign Out</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render @active_sessions %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <hr class="my-4">
+
+  <h2 class="text-danger mb-3">Danger Zone</h2>
+  <%= button_to "Delete Account", account_path, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Are you sure? This cannot be undone." } } %>
+</div>

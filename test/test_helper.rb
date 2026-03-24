@@ -8,6 +8,10 @@ class ActiveSupport::TestCase
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+end
 
-  # Add more helper methods to be used by all tests here...
+class ActionDispatch::IntegrationTest
+  def sign_in(user, password: "password")
+    post login_path, params: { user: { email: user.email, password: password } }
+  end
 end

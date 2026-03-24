@@ -9,14 +9,24 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  
-  <header>
-    <% flash.each do |message_type, message| %>
-      <div class="<%= message_type %>"><%= message %></div>
-    <% end %>
-  </header>
 
   <body id="tree">
+    <%= render "shared/navbar" %>
+
+    <div class="container">
+      <% flash.each do |type, message| %>
+        <% alert_class = case type
+           when "notice" then "alert-success"
+           when "alert" then "alert-danger"
+           else "alert-warning"
+           end %>
+        <div class="alert <%= alert_class %> alert-dismissible fade show" role="alert">
+          <%= message %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+    </div>
+
     <%= yield %>
   </body>
 </html>

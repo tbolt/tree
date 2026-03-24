@@ -1,12 +1,14 @@
-<!-- app/views/passwords/edit.html.erb -->
-<%= form_with url: password_path(params[:password_reset_token]), scope: :user, method: :put do |form| %>
-  <div>
-    <%= form.label :password %>
-    <%= form.password_field :password, required: true %>
-  </div>
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, required: true %>
-  </div>
-  <%= form.submit "Update Password" %>
-<% end %>
+<div class="col-lg-6 mx-auto p-4 py-md-5">
+  <h1 class="mb-4">Reset Password</h1>
+  <%= form_with url: password_path(params[:password_reset_token]), scope: :user, method: :put do |form| %>
+    <div class="mb-3">
+      <%= form.label :password, "New Password", class: "form-label" %>
+      <%= form.password_field :password, required: true, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :password_confirmation, class: "form-label" %>
+      <%= form.password_field :password_confirmation, required: true, class: "form-control" %>
+    </div>
+    <%= form.submit "Update Password", class: "btn btn-primary" %>
+  <% end %>
+</div>

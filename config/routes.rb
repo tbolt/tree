@@ -13,6 +13,16 @@ Rails.application.routes.draw do
   get "account", to: "users#edit"
   delete "account", to: "users#destroy"
   
+  get "profile/edit", to: "profiles#edit", as: :edit_profile
+  patch "profile", to: "profiles#update", as: :update_profile
+
+  get "explore", to: "explore#index"
+
+  resources :follows, only: [:create, :destroy]
+  resources :posts, only: [:create, :destroy]
+
+  get "/:username/followers", to: "follows#followers", as: :followers
+  get "/:username/following", to: "follows#following", as: :following
   get '/:username' => 'users#show', as: :profile
   
   resources :confirmations, only: [:create, :edit, :new], param: :confirmation_token

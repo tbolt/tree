@@ -1,7 +1,12 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+confirmed_user:
+  email: confirmed@example.com
+  username: confirmed
+  password_digest: <%= BCrypt::Password.create('password') %>
+  confirmed_at: <%= Time.current %>
+  display_name: Test User
+  bio: A confirmed test user.
 
-one:
-  email: MyString
-
-two:
-  email: MyString
+unconfirmed_user:
+  email: unconfirmed@example.com
+  username: unconfirmed
+  password_digest: <%= BCrypt::Password.create('password') %>

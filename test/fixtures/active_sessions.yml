@@ -1,7 +1,5 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  user: one
-
-two:
-  user: two
+confirmed_session:
+  user: confirmed_user
+  remember_token: <%= SecureRandom.urlsafe_base64 %>
+  user_agent: "Rails Test"
+  ip_address: "127.0.0.1"

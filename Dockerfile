@@ -1,10 +1,10 @@
 # syntax = docker/dockerfile:experimental
-ARG RUBY_VERSION=2.7.3
+ARG RUBY_VERSION=3.4.7
 ARG VARIANT=jemalloc-slim
 FROM quay.io/evl.ms/fullstaq-ruby:${RUBY_VERSION}-${VARIANT} as base
 
-ARG NODE_VERSION=16
-ARG BUNDLER_VERSION=2.3.9
+ARG NODE_VERSION=20
+ARG BUNDLER_VERSION=2.6.2
 
 ARG RAILS_ENV=production
 ENV RAILS_ENV=${RAILS_ENV}
@@ -77,7 +77,8 @@ RUN --mount=type=cache,id=prod-apt-cache,sharing=locked,target=/var/cache/apt \
 COPY --from=gems /app /app
 COPY --from=node_modules /app/node_modules /app/node_modules
 
-ENV SECRET_KEY_BASE 1
+# Use Rails 8 dummy key for asset precompilation (not leaked into runtime)
+ENV SECRET_KEY_BASE_DUMMY 1
 
 COPY . .
 

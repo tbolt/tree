@@ -1,0 +1,17 @@
+<div id="<%= dom_id(post) %>" class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <%= link_to profile_path(post.user.username), class: "text-decoration-none" do %>
+          <strong><%= post.user.display_name_or_username %></strong>
+          <span class="text-muted">@<%= post.user.username %></span>
+        <% end %>
+        <span class="text-muted">&middot; <%= time_ago_in_words(post.created_at) %> ago</span>
+      </div>
+      <% if user_signed_in? && current_user == post.user %>
+        <%= button_to "Delete", post_path(post), method: :delete, class: "btn btn-outline-danger btn-sm", form: { data: { turbo_confirm: "Are you sure?" } } %>
+      <% end %>
+    </div>
+    <div class="mt-2 mb-0"><%= simple_format(post.body) %></div>
+  </div>
+</div>

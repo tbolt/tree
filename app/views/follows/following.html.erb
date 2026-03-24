@@ -1,0 +1,28 @@
+<div class="col-lg-8 mx-auto p-4 py-md-5">
+  <h1>
+    <%= link_to @user.display_name_or_username, profile_path(@user.username) %> is Following
+  </h1>
+  <% if @users.any? %>
+    <div class="list-group mb-4">
+      <% @users.each do |user| %>
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <%= link_to profile_path(user.username) do %>
+              <strong><%= user.display_name_or_username %></strong>
+              <span class="text-muted">@<%= user.username %></span>
+            <% end %>
+          </div>
+          <%= render partial: "follows/follow_button", locals: { user: user } %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if @next_cursor && @users.size == 20 %>
+      <div class="text-center">
+        <%= link_to "Load more", following_path(@user.username, before: @next_cursor.iso8601(6)), class: "btn btn-outline-secondary" %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-muted">Not following anyone yet.</p>
+  <% end %>
+</div>

@@ -28,7 +28,11 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.find_by(username: params[:username])
+    @user = User.find_by!(username: params[:username])
+    @posts = @user.posts.includes(:user).recent
+    @posts = @posts.where("created_at < ?", params[:before]) if params[:before].present?
+    @posts = @posts.limit(20)
+    @next_cursor = @posts.last&.created_at
   end
   
   def update
@@ -46,7 +50,7 @@ class UsersController < ApplicationController
         render :edit, status: :unprocessable_entity
       end
     else
-      flash.now[:error] = "Incorrect password"
+      flash.now[:alert] = "Incorrect password"
       render :edit, status: :unprocessable_entity
     end
   end

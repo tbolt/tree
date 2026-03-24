@@ -8,13 +8,20 @@ class User < ApplicationRecord
   has_secure_password
   
   has_many :active_sessions, dependent: :destroy
+  has_many :sent_follows, class_name: "Follow", foreign_key: :follower_id, dependent: :destroy
+  has_many :received_follows, class_name: "Follow", foreign_key: :followed_id, dependent: :destroy
+  has_many :following, through: :sent_follows, source: :followed
+  has_many :followers, through: :received_follows, source: :follower
+  has_many :posts, dependent: :destroy
   
   before_save :downcase_email
   before_save :downcase_unconfirmed_email
   
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}, presence: true, uniqueness: true
-  validates :username, presence: true
+  validates :username, presence: true, uniqueness: true
   validates :unconfirmed_email, format: {with: URI::MailTo::EMAIL_REGEXP, allow_blank: true}
+  validates :display_name, length: {maximum: 50}
+  validates :bio, length: {maximum: 160}
   
   def self.authenticate_by(attributes)
     passwords, identifiers = attributes.to_h.partition do |name, value|
@@ -62,6 +69,26 @@ class User < ApplicationRecord
     signed_id expires_in: PASSWORD_RESET_TOKEN_EXPIRATION, purpose: :reset_password
   end
   
+  def display_name_or_username
+    display_name.presence || username
+  end
+
+  def follow(other_user)
+    following << other_user unless self == other_user || following?(other_user)
+  end
+
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+
+  def following?(other_user)
+    sent_follows.where(followed_id: other_user.id).exists?
+  end
+
+  def feed
+    Post.includes(:user).where(user_id: following_ids).recent
+  end
+
   def unconfirmed?
     !confirmed?
   end
@@ -76,12 +103,12 @@ class User < ApplicationRecord
   
   def send_confirmation_email!
     confirmation_token = generate_confirmation_token
-    UserMailer.confirmation(self, confirmation_token).deliver_now
+    UserMailer.confirmation(self, confirmation_token).deliver_later
   end
   
   def send_password_reset_email!
     password_reset_token = generate_password_reset_token
-    UserMailer.password_reset(self, password_reset_token).deliver_now
+    UserMailer.password_reset(self, password_reset_token).deliver_later
   end
   
   private

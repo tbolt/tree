@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom mb-4">
+  <div class="container">
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+      <img src="<%= asset_path 'tree.svg' %>" width="32" height="32" class="me-2">
+      <strong>Tree</strong>
+    <% end %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Feed", root_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Explore", explore_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "My Profile", profile_path(current_user.username), class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Account", account_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Logout", logout_path, method: :delete, class: "nav-link btn btn-link" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Log In", login_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign Up", sign_up_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

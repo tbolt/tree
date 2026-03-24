@@ -1,0 +1,3 @@
+one:
+  follower: confirmed_user
+  followed: unconfirmed_user

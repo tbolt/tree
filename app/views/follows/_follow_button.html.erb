@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "follow_button_#{user.id}" do %>
+  <% if user_signed_in? && current_user != user %>
+    <% if current_user.following?(user) %>
+      <% follow = current_user.sent_follows.find_by(followed: user) %>
+      <%= button_to "Unfollow", follow_path(follow), method: :delete, class: "btn btn-outline-secondary btn-sm" %>
+    <% else %>
+      <%= button_to "Follow", follows_path(followed_id: user.id), method: :post, class: "btn btn-primary btn-sm" %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,9 @@
+hello_post:
+  user: confirmed_user
+  body: "Hello world, this is my first post on Tree!"
+  created_at: <%= 1.hour.ago %>
+
+recent_post:
+  user: unconfirmed_user
+  body: "A post from the unconfirmed user."
+  created_at: <%= 5.minutes.ago %>
